@@ -1,1 +1,29 @@
-/* You can add global styles to this file, and also import other style files */
+@import '_variables.scss';
+
+html, body {
+    font-family: $app-font-family;
+    background-color: $body-bg;
+    color: $primary-color;
+    margin: 0;
+}
+
+input, textarea, button {
+    font-family: $app-font-family;
+}
+
+button {
+    background-color: $primary-color;
+    color: $body-bg;
+    border-radius: $item-border-radius;
+    border: none;
+    font-size: $button-font-size;
+    padding: 20px;
+    transition: box-shadow 0.3s ease;
+    box-shadow: $default-shadow;
+    cursor: pointer;
+    font-weight: $button-search-bar-weight;
+
+    &:hover {
+        box-shadow: $focus-hover-shadow;
+    }
+}
