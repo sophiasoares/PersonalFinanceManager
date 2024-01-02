@@ -5,6 +5,7 @@
     border-radius: $widget-border-radius;
     width: 100%;
     height: 85vh;
+    padding: 20px;
 }
 
 @mixin responsive-height($max-height, $container-height) {
@@ -19,3 +20,8 @@
 @include responsive-height(570, 75vh);
 @include responsive-height(450, 70vh);
 @include responsive-height(400, 65vh);
+
+h2 {
+    color: $dark-color;
+    font-size: calc(1.2rem + 0.5vw);
+}
