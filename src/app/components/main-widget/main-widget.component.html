@@ -1,5 +1,13 @@
 <div class="container">
-    <h2>Total {{ data.type }}: {{ totalAmount | currency:'EUR':'symbol':'1.2-2' }}</h2>
+    <h2>Total {{ list.type }}: {{ totalAmount | currency:'EUR':'symbol':'1.2-2' }}</h2>
     <!-- search bar -->
-    <h2>{{data.type | capitalize}}s</h2>
+    <h2>{{list.type | capitalize}}s</h2>
+    <div class="item-container">
+        <app-item-widget *ngFor="let item of list.data"></app-item-widget>
+        <app-item-widget *ngFor="let item of list.data"></app-item-widget>
+        <app-item-widget *ngFor="let item of list.data"></app-item-widget>
+        <app-item-widget *ngFor="let item of list.data"></app-item-widget>
+        <app-item-widget *ngFor="let item of list.data"></app-item-widget>
+    </div>
+    <button class="add-button">Add</button>
 </div>

@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-item-widget',
   standalone: true,
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './item-widget.component.html',
   styleUrl: './item-widget.component.scss'
 })

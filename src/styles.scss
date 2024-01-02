@@ -14,18 +14,18 @@ input, textarea, button {
 }
 
 button {
-    background-color: $primary-color;
-    color: $body-bg;
+    background-color: $secondary-color;
+    color: $dark-color;
     border-radius: $item-border-radius;
     border: none;
     font-size: $button-font-size;
-    padding: 20px;
+    padding: 10px;
     transition: box-shadow 0.3s ease;
     box-shadow: $default-shadow;
     cursor: pointer;
     font-weight: $button-search-bar-weight;
 
     &:hover {
-        box-shadow: $focus-hover-shadow;
+        box-shadow: $component-shadow;
     }
 }

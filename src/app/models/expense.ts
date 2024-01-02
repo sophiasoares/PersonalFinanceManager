@@ -1,7 +1,6 @@
-export interface Expense {
-    id: number;
-    description: string;
-    amount: number;
+import { Transaction } from './transaction';
+
+export interface Expense extends Transaction {
     category: string;
     date: Date;
 }
