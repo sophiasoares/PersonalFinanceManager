@@ -1,16 +1,37 @@
 @import '../_variables.scss';
 
+.wrapper {
+    position: relative;
+    background-color: $body-bg;
+    color: $secondary-color;
+}
+
 .wave {
-    z-index: -1;
+    z-index: 1;
+    width: 100%;
+    position: fixed;
 }
 
 .bottom-wave {
-    position: fixed;
     bottom: 0;
-    left: 0;
-    width: 100%;   
 }
 
-svg {
-    display: block;
+.app-body {
+    z-index: 2;
+    padding: 20px;
+    position: relative;
+
+    h1 {
+        font-size: $title1-font-size;
+        font-weight: 400;
+        margin: 20px;
+    }
 }
+
+@media screen and (max-width: 768px) {
+    .col-12 {
+        margin-bottom: 30px;
+    }
+}
+
+
