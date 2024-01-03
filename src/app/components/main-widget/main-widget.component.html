@@ -1,13 +1,12 @@
 <div class="container">
     <h2>Total {{ list.type }}: {{ totalAmount | currency:'EUR':'symbol':'1.2-2' }}</h2>
-    <!-- search bar -->
+    <div class="search-bar item-widget-container">
+        <span class="search-icon"></span>
+        <input type="search" placeholder="Search..."> <!-- (input)="onSearchChange($event)" -->
+    </div> 
     <h2>{{list.type | capitalize}}s</h2>
     <div class="item-container">
-        <app-item-widget *ngFor="let item of list.data"></app-item-widget>
-        <app-item-widget *ngFor="let item of list.data"></app-item-widget>
-        <app-item-widget *ngFor="let item of list.data"></app-item-widget>
-        <app-item-widget *ngFor="let item of list.data"></app-item-widget>
-        <app-item-widget *ngFor="let item of list.data"></app-item-widget>
+        <app-item-widget *ngFor="let item of list.data" [transaction]="item"></app-item-widget>
     </div>
     <button class="add-button">Add</button>
 </div>

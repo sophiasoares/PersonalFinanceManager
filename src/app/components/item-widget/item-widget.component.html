@@ -1,3 +1,11 @@
-<div class="container">
-    
+<div class="item-widget-container">
+    <div class="row">
+        <div class="col">
+          <h5>{{transaction.description}}</h5>
+          <h6>• {{transaction.description}}</h6>
+        </div>
+        <div class="col d-flex align-items-center justify-content-end">
+            <h5>{{transaction.amount | currency:'EUR':'symbol':'1.2-2'}}</h5>
+        </div>
+      </div>
 </div>
