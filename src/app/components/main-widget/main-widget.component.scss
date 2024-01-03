@@ -10,6 +10,10 @@
     position: relative;
     display: flex;
     flex-direction: column;
+
+    .total {
+        text-align: center;
+    }
 }
 
 @mixin responsive-height($max-height, $container-height) {
@@ -28,6 +32,14 @@
 h2 {
     color: $dark-color;
     font-size: calc(1.2rem + 0.5vw);
+}
+
+.noFindings {
+    color: $dark-color;
+    font-size: $button-font-size;
+    text-align: center;
+    margin-top: 20px;
+    font-weight: $button-search-bar-weight;
 }
 
 .search-bar {
