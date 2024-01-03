@@ -1,1 +1,54 @@
-<p>detail-widget works!</p>
+<div *ngIf="showModal" class="background-container">
+    <div class="inner-container">
+        <h6>Description</h6>
+        <div class="attribute-container">
+            <input type="text">
+        </div>
+
+        <h6>Amount</h6>
+        <div class="attribute-container">
+            <input type="number">
+        </div>
+
+        <h6 *ngIf="trans.isExpense(transaction) || trans.isBudget(transaction); else isIncome">Category</h6>
+        <ng-template #isIncome>
+            <h6>Source</h6>
+        </ng-template>
+
+        <div class="attribute-container">
+            <!-- dropdown -->
+        </div>
+
+        <div *ngIf="trans.isBudget(transaction); else isExpenseOrIncome">
+            <div class="row">
+                <h6>Start Date</h6>
+                <h6>End Date</h6>
+            </div>
+            <div class="row">
+                <div class="attribute-container">
+                    <input type="date">
+                </div>
+                <div class="attribute-container">
+                    <input type="date">
+                </div>
+            </div>
+        </div>
+
+        <ng-template #isExpenseOrIncome>
+            <h6>Date</h6>
+            <div class="attribute-container">
+                <input type="date">
+            </div>
+        </ng-template>
+
+        <h6>Date</h6>
+        <div class="attribute-container">
+            <input type="date">
+        </div>
+        <div class="row buttons">
+            <button (click)="closeModal()">Close</button>
+            <button>Remove</button>
+            <button>Save</button>
+        </div>
+    </div>
+</div>

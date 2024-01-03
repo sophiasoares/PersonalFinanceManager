@@ -1,4 +1,4 @@
-import { Component, Input, SimpleChanges } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CurrencyPipe, CommonModule } from '@angular/common';
 import { CapitalizePipe } from '../../shared/capitalize.pipe';
 import { TypedArray } from '../../models/typedArray';
@@ -7,7 +7,6 @@ import { Transaction } from '../../models/transaction';
 import { SpecificTypePipe } from '../../shared/specific-type.pipe';
 import { FormsModule } from '@angular/forms';
 import { TransactionService } from '../../services/transaction.service';
-
 
 @Component({
   selector: 'app-main-widget',

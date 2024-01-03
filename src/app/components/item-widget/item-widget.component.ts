@@ -5,11 +5,12 @@ import { Expense } from '../../models/expense';
 import { Income } from '../../models/income';
 import { Budget } from '../../models/budget';
 import { TransactionService } from '../../services/transaction.service';
+import { DetailWidgetComponent } from '../detail-widget/detail-widget.component';
 
 @Component({
   selector: 'app-item-widget',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, DetailWidgetComponent],
   templateUrl: './item-widget.component.html',
   styleUrl: './item-widget.component.scss'
 })
@@ -17,6 +18,8 @@ export class ItemWidgetComponent {
   @Input() transaction!: Expense | Income | Budget;
   @Output() onTotalChanged = new EventEmitter<number>();
   total: number = 0;
+  showModal = false;
+
 
   constructor(protected trans: TransactionService) {}
 
@@ -24,4 +27,14 @@ export class ItemWidgetComponent {
     this.total = this.transaction.amount;
     //this.onTotalChanged.emit(this.total);
   }
+
+  openModal(transaction: Expense | Income | Budget) {
+    this.transaction = transaction;
+    this.showModal = true;
+  }
+
+  closeModal(bool: boolean) {
+    this.showModal = bool;
+  }
+
 }
