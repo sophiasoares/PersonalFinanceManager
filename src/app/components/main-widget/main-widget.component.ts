@@ -7,11 +7,12 @@ import { CapitalizePipe } from '../../shared/capitalize.pipe';
 import { TypedArray } from '../../models/typedArray';
 import { ItemWidgetComponent } from '../item-widget/item-widget.component';
 import { Transaction } from '../../models/transaction';
+import { SpecificTypePipe } from '../../shared/specific-type.pipe';
 
 @Component({
   selector: 'app-main-widget',
   standalone: true,
-  imports: [CurrencyPipe, CapitalizePipe, ItemWidgetComponent, CommonModule],
+  imports: [CurrencyPipe, CapitalizePipe, ItemWidgetComponent, CommonModule, SpecificTypePipe],
   templateUrl: './main-widget.component.html',
   styleUrl: './main-widget.component.scss'
 })
@@ -23,7 +24,9 @@ export class MainWidgetComponent {
   constructor() {}
 
   ngOnInit() {
-
+    // this.list.forEach((item: Transaction) => {
+    //   this.totalAmount += item.amount;
+    // });
   }
 
   getTotalFromChild(total: number) {
