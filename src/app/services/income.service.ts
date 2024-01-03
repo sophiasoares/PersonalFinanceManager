@@ -1,23 +1,46 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
 import { TransactionService } from './transaction.service';
+import { Income } from '../models/income';
 
 @Injectable({
   providedIn: 'root'
 })
 export class IncomeService {
-  httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json' })};
-
-  constructor(private http: HttpClient, private trans: TransactionService) { }
+  incomes: Income[] = [];
+  currentIncome: Income = {id: 0, description: '', amount: 0, source: '', date: new Date(), type: 'income'};
+  
+  constructor(private trans: TransactionService) { }
 
   // Fetch all incomes
-  getAllIncomes(): Observable<any> {
-    return this.http.get<any>(`${this.trans.transactionsUrl}/income/all`)
-      .pipe(
-        tap(_ => console.log('fetched incomes')),
-        catchError(this.trans.handleError<any>('getIncomes', []))
-      );
+  getAllIncomes(): Income[] {
+    this.trans.getAllTransactions<Income>('incomes').subscribe(incomes => {
+      this.incomes = incomes;
+    });
+    return this.incomes;
   }
+
+  // Fetch income by id
+  getIncome(id: number): Income {
+    this.trans.getTransaction<Income>('income', id).subscribe(income => {
+      this.currentIncome = income;
+    });
+    return this.currentIncome;
+  }
+
+  // Add new income
+  addIncome(income: Income) {
+    this.trans.addTransaction<Income>('income', income).subscribe(() => this.trans.goBack());
+  }
+  
+  // Update income
+  updateIncome(updatedIncome: Income, id: number) {
+    this.trans.updateTransaction<Income>('income', id, updatedIncome).subscribe(() => this.trans.goBack());
+  }
+
+  // Delete income
+  deleteIncome(id: number) {
+    this.trans.deleteTransaction<Income>('income', id).subscribe(() => this.trans.goBack());
+  }
+
 }
+

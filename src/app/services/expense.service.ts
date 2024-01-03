@@ -1,7 +1,4 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
 import { TransactionService } from './transaction.service';
 import { Expense } from '../models/expense';
 
@@ -9,31 +6,40 @@ import { Expense } from '../models/expense';
   providedIn: 'root'
 })
 export class ExpenseService {
-  httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json' })};
-
-  constructor(private http: HttpClient, private trans: TransactionService) { }
+  expenses: Expense[] = [];
+  currentExpense: Expense = {id: 0, description: '', amount: 0, category: '', date: new Date(), type: 'expense'};
+  
+  constructor(private trans: TransactionService) { }
 
   // Fetch all expenses
-  getAllExpenses(): Observable<any> {
-    return this.http.get<any>(`${this.trans.transactionsUrl}/expense/all`)
-      .pipe(
-        tap(_ => console.log('fetched expenses')),
-        catchError(this.trans.handleError<any>('getExpenses', []))
-      );
+  getAllExpenses(): Expense[] {
+    this.trans.getAllTransactions<Expense>('expenses').subscribe(expenses => {
+      this.expenses = expenses;
+    });
+    return this.expenses;
   }
 
-  // // Fetch expense by id 
-  // getExoenseById(id: number): Observable<Expense> {
-  //   const url = `${this.trans.transactionsUrl}/expense/find/${id}`;
-  //   return this.http.get<Recipe>(url).pipe(
-  //     tap(_ => console.log(`fetched recipe id=${id}`)),
-  //     catchError(this.handleError<Recipe>(`getRecipe id=${id}`))
-  //   );
-  // }
+  // Fetch expense by id
+  getExpense(id: number): Expense {
+    this.trans.getTransaction<Expense>('expense', id).subscribe(expense => {
+      this.currentExpense = expense;
+    });
+    return this.currentExpense;
+  }
 
-  // // Fetch expense by id
-  // getExpenseById(id: number): Observable<any> {
-  //   const url = 
-    
+  // Add new expense
+  addExpense(expense: Expense) {
+    this.trans.addTransaction<Expense>('expense', expense).subscribe(() => this.trans.goBack());
+  }
+  
+  // Update expense
+  updateExpense(updatedExpense: Expense, id: number) {
+    this.trans.updateTransaction<Expense>('expense', id, updatedExpense).subscribe(() => this.trans.goBack());
+  }
+
+  // Delete expense
+  deleteExpense(id: number) {
+    this.trans.deleteTransaction<Expense>('expense', id).subscribe(() => this.trans.goBack());
+  }
 
 }
