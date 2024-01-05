@@ -115,19 +115,18 @@ h2 {
 ::-webkit-scrollbar-track {
     background: $body-bg;
     border-radius: $item-border-radius;
+}
 
-  }
-  
-  ::-webkit-scrollbar-thumb {
+::-webkit-scrollbar-thumb {
     background: $secondary-color;
     border-radius: $item-border-radius;
-  }
-  
-  ::-webkit-scrollbar-thumb:hover {
+}
+
+::-webkit-scrollbar-thumb:hover {
     background: darken($secondary-color, 15%);
-  }
-  
-  ::-webkit-scrollbar {
+}
+
+::-webkit-scrollbar {
     width: 10px;
-  }
+}
   

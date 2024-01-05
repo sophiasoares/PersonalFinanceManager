@@ -7,20 +7,27 @@ import { Transaction } from '../../models/transaction';
 import { SpecificTypePipe } from '../../shared/specific-type.pipe';
 import { FormsModule } from '@angular/forms';
 import { TransactionService } from '../../services/transaction.service';
+import { DetailWidgetComponent } from '../detail-widget/detail-widget.component';
+import { Expense } from '../../models/expense';
+import { Income } from '../../models/income';
+import { Budget } from '../../models/budget';
 
 @Component({
   selector: 'app-main-widget',
   standalone: true,
-  imports: [CurrencyPipe, CapitalizePipe, ItemWidgetComponent, CommonModule, SpecificTypePipe, FormsModule],
+  imports: [CurrencyPipe, CapitalizePipe, ItemWidgetComponent, CommonModule, SpecificTypePipe, FormsModule, DetailWidgetComponent],
   templateUrl: './main-widget.component.html',
   styleUrl: './main-widget.component.scss'
 })
 export class MainWidgetComponent {
   @Input() list!: TypedArray<Transaction>;
+  @Input() widgetType!: string;
   totalFromChild: number = 0;
   totalAmount: number = 0;
   searchTerm: string = '';
   filteredList: TypedArray<Transaction> = {data: [], type: 'expense'};
+  showModal = false;
+  newTransaction: Expense | Income | Budget = {id: 0, description: '', amount: 0, date: new Date(), startDate: new Date(), endDate: new Date(), category: '', source: '', type: 'expense'};
   
   constructor(private trans: TransactionService) {}
 
@@ -29,6 +36,7 @@ export class MainWidgetComponent {
     this.list.data.forEach((item: Transaction) => {
       this.totalAmount += item.amount;
     });
+    this.newTransaction.type = this.widgetType;
   }
 
   getTotalFromChild(total: number) {
@@ -37,6 +45,14 @@ export class MainWidgetComponent {
 
   updateTotalAmount(total: number) {
     this.totalAmount += total;
+  }
+
+  openModal() {
+    this.showModal = true;
+  }
+
+  closeModal(bool: boolean) {
+    this.showModal = bool;
   }
 
   applyFilter() {

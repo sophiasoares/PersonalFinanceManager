@@ -12,13 +12,13 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-12 col-md-4">
-          <app-main-widget [list]="expenses"></app-main-widget>
+          <app-main-widget [list]="expenses" [widgetType]="'expense'"></app-main-widget>
         </div>
         <div class="col-12 col-md-4">
-          <app-main-widget [list]="incomes"></app-main-widget>
+          <app-main-widget [list]="incomes" [widgetType]="'income'"></app-main-widget>
         </div>
         <div class="col-12 col-md-4">
-          <app-main-widget [list]="budgets"></app-main-widget>
+          <app-main-widget [list]="budgets" [widgetType]="'budget'"></app-main-widget>
         </div>
       </div>
     </div>

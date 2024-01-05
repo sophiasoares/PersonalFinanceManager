@@ -6,6 +6,7 @@ import { Transaction } from '../models/transaction';
 import { Expense } from '../models/expense';
 import { Income } from '../models/income';
 import { Budget } from '../models/budget';
+import { FormGroup, FormControl } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
@@ -84,5 +85,17 @@ export class TransactionService {
   goBack(): void {
     window.history.back();
   }
+
+    // Utility method to mark all form controls as touched
+    markAllAsTouched(group: FormGroup): void {
+      Object.keys(group.controls).forEach(field => {
+        const control = group.get(field);
+        if (control instanceof FormControl) {
+          control.markAsTouched({ onlySelf: true });
+        } else if (control instanceof FormGroup) {
+          this.markAllAsTouched(control);
+        }
+      });
+    }
   
 }

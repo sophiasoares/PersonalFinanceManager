@@ -9,5 +9,7 @@
         <app-item-widget *ngFor="let item of filteredList.data | specificType" [transaction]="item" (onTotalChanged)="getTotalFromChild($event)"></app-item-widget>
         <div class="noFindings" *ngIf="filteredList.data.length === 0">No transactions found.</div>
     </div>
-    <button class="add-button">Add</button>
+    <button class="add-button" (click)="openModal()">Add</button>
 </div>
+<app-detail-widget [transaction]="newTransaction" [showModal]="showModal" [isAdd]="true" (onClose)="closeModal($event)"></app-detail-widget>
+

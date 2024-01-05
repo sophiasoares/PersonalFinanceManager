@@ -19,22 +19,28 @@ export class ItemWidgetComponent {
   @Output() onTotalChanged = new EventEmitter<number>();
   total: number = 0;
   showModal = false;
-
+  thisModalOpen = false; // Tracks if the model of this transaction is open
 
   constructor(protected trans: TransactionService) {}
-
+ 
   ngOnInit() {
     this.total = this.transaction.amount;
-    //this.onTotalChanged.emit(this.total);
+    //this.onTotalChanged.emit(this.total); 
   }
 
   openModal(transaction: Expense | Income | Budget) {
-    this.transaction = transaction;
-    this.showModal = true;
+    if (!this.thisModalOpen) {
+      this.transaction = transaction;
+      //this.trans.modalOpen = true;
+      this.showModal = true;
+      this.thisModalOpen = true;
+    }
   }
 
   closeModal(bool: boolean) {
     this.showModal = bool;
+    //this.trans.modalOpen = false;
+    this.thisModalOpen = false;
   }
 
 }

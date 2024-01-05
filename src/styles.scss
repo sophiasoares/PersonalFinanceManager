@@ -40,3 +40,26 @@ button {
     position: relative;
     margin-bottom: 10px;
 }
+
+select, input {
+    color: $dark-color;
+}
+
+select, button {
+    &:focus {
+        outline: none;
+    }
+}
+
+select, input[type="date"] {
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+input {
+    &:focus {
+        outline-color: $primary-color;
+    }
+}
+
