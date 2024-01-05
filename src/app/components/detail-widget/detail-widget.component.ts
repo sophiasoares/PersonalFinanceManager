@@ -38,15 +38,15 @@ export class DetailWidgetComponent implements OnInit {
     this.categories = Object.values(CategoryEnum);
     this.sources = Object.values(SourceEnum);
     this.transactionForm = this.formBuilder.group({
-      description: ['', [Validators.required, notEmptyValidator()]],
-      amount: ['', [Validators.required, notEmptyValidator()]],
-      date: ['', [Validators.required, notEmptyValidator()]],
-      startDate: ['', [Validators.required, notEmptyValidator()]],
-      endDate: ['', [Validators.required, notEmptyValidator()]],
-      category: ['', [Validators.required, notEmptyValidator()]],
+      description: ['', [Validators.required]],
+      amount: ['', [Validators.required]],
+      date: ['', [Validators.required]],
+      startDate: ['', [Validators.required]],
+      endDate: ['', [Validators.required]],
+      category: ['', [Validators.required]],
     });
     if (!this.isAdd) {
-      //this.loadTransactionForEdit();
+      this.loadTransactionForEdit();
     }
   }
 
@@ -125,9 +125,11 @@ export class DetailWidgetComponent implements OnInit {
       } else if (data.type === 'budget') {
         this.transaction = data as Budget;
       }
+
       const formData = {
-        ...data,
-      };
+        ...this.transaction, 
+      }
+      
       this.transactionForm.patchValue(formData);
     });
   }

@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, SimpleChanges } from '@angular/core';
 import { CurrencyPipe, CommonModule } from '@angular/common';
 import { CapitalizePipe } from '../../shared/capitalize.pipe';
 import { TypedArray } from '../../models/typedArray';

@@ -21,16 +21,16 @@ export class TransactionService {
   getAllTransactions<T extends Transaction>(type: string): Observable<T[]> {
     return this.http.get<T[]>(`${this.transactionsUrl}/${type}/all`)
       .pipe(
-        tap(_ => console.log('fetched' + type + 's')),
+        tap(_ => console.log('fetched ' + type + 's')),
         catchError(this.handleError<T[]>('get-'+ type + 's', []))
       );
   }
 
   // Fetch transaction by id
   getTransaction<T extends Transaction>(type: string, id: number): Observable<T> {
-    return this.http.get<T>(`${this.transactionsUrl}/${type}/${id}`)
+    return this.http.get<T>(`${this.transactionsUrl}/${type}/find/${id}`)
       .pipe(
-        tap(_ => console.log('fetched' + type)),
+        tap(_ => console.log('fetched ' + type)),
         catchError(this.handleError<T>('get-'+ type))
       );
   }
@@ -39,7 +39,7 @@ export class TransactionService {
   addTransaction<T extends Transaction>(type: string, transaction: T): Observable<T> {
     return this.http.post<T>(`${this.transactionsUrl}/${type}/add`, transaction, this.httpOptions)
       .pipe(
-        tap((newTransaction: T) => console.log('added' + type)),
+        tap((newTransaction: T) => console.log('added ' + type)),
         catchError(this.handleError<T>('add-'+ type))
       );
   }
@@ -48,21 +48,21 @@ export class TransactionService {
   updateTransaction<T extends Transaction>(type: string, id: number, transaction: T): Observable<any> {
     return this.http.put(`${this.transactionsUrl}/${type}/${id}`, transaction, this.httpOptions)
       .pipe(
-        tap(_ => console.log('updated' + type)),
+        tap(_ => console.log('updated ' + type)),
         catchError(this.handleError<any>('update-'+ type))
       );
   }
 
   // Delete transaction
   deleteTransaction<T extends Transaction>(type: string, id: number): Observable<T> {
-    return this.http.delete<T>(`${this.transactionsUrl}/${type}/${id}`, this.httpOptions)
+    return this.http.delete<T>(`${this.transactionsUrl}/${type}/delete/${id}`, this.httpOptions)
       .pipe(
-        tap(_ => console.log('deleted' + type)),
+        tap(_ => console.log('deleted ' + type)),
         catchError(this.handleError<T>('delete-'+ type))
       );
   }
 
-  handleError<T>(operation = 'operation', result?: T) {
+  handleError<T>(operation = 'operation ', result?: T) {
     return (error: any): Observable<T> => {
       console.error(error); 
       console.log(`${operation} failed: ${error.message}`);
