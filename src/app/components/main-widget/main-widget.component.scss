@@ -40,6 +40,7 @@ h2 {
     text-align: center;
     margin-top: 20px;
     font-weight: $button-search-bar-weight;
+    flex-grow: 1;
 }
 
 .search-bar {
@@ -55,6 +56,7 @@ h2 {
     position: relative;
 
     input[type="search"] {
+        width: inherit;
         border: none; 
         outline: none; 
         background-color: $secondary-color;

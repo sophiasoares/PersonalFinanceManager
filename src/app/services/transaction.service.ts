@@ -70,15 +70,15 @@ export class TransactionService {
     };
   }
 
-  isExpense(transaction: Transaction): transaction is Expense {
+  isExpense(transaction: Expense | Income | Budget): transaction is Expense {
     return transaction.type === 'expense';
   }
   
-  isIncome(transaction: Transaction): transaction is Income {
+  isIncome(transaction: Expense | Income | Budget): transaction is Income {
     return transaction.type === 'income';
   }
   
-  isBudget(transaction: Transaction): transaction is Budget {
+  isBudget(transaction: Expense | Income | Budget): transaction is Budget {
     return transaction.type === 'budget';
   }
 

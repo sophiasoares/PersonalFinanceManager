@@ -5,10 +5,12 @@
         <input type="search" placeholder="Search..." [(ngModel)]="searchTerm" (input)="applyFilter()">
     </div> 
     <h2>{{list.type | capitalize}}s</h2>
-    <div class="item-container">
-        <app-item-widget *ngFor="let item of filteredList.data | specificType" [transaction]="item" (onTotalChanged)="getTotalFromChild($event)"></app-item-widget>
-        <div class="noFindings" *ngIf="filteredList.data.length === 0">No transactions found.</div>
+    <div class="item-container" *ngIf="filteredList.data.length > 0; else noFindings">
+        <app-item-widget *ngFor="let item of filteredList.data" [transaction]="item" (onTotalChanged)="getTotalFromChild($event)"></app-item-widget>
     </div>
+    <ng-template #noFindings>
+        <div class="noFindings">No transactions found.</div>
+    </ng-template>
     <button class="add-button" (click)="openModal()">Add</button>
 </div>
 <app-detail-widget [transaction]="newTransaction" [showModal]="showModal" [isAdd]="true" (onClose)="closeModal($event)"></app-detail-widget>

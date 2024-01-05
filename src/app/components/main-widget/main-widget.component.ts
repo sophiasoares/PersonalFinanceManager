@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { CurrencyPipe, CommonModule } from '@angular/common';
 import { CapitalizePipe } from '../../shared/capitalize.pipe';
 import { TypedArray } from '../../models/typedArray';
@@ -20,23 +20,28 @@ import { Budget } from '../../models/budget';
   styleUrl: './main-widget.component.scss'
 })
 export class MainWidgetComponent {
-  @Input() list!: TypedArray<Transaction>;
+  @Input() list!: TypedArray<Expense | Income | Budget>;
   @Input() widgetType!: string;
   totalFromChild: number = 0;
   totalAmount: number = 0;
   searchTerm: string = '';
-  filteredList: TypedArray<Transaction> = {data: [], type: 'expense'};
+  filteredList: TypedArray<Expense | Income | Budget> = {data: [], type: 'expense'};
   showModal = false;
   newTransaction: Expense | Income | Budget = {id: 0, description: '', amount: 0, date: new Date(), startDate: new Date(), endDate: new Date(), category: '', source: '', type: 'expense'};
-  
+
   constructor(private trans: TransactionService) {}
 
   ngOnInit() {
-    this.filteredList = {...this.list, data: [...this.list.data]}; // deep copy
-    this.list.data.forEach((item: Transaction) => {
-      this.totalAmount += item.amount;
-    });
     this.newTransaction.type = this.widgetType;
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['list'] && changes['list'].currentValue) {
+      this.filteredList = {...this.list, data: [...this.list.data]}; // deep copy
+      this.list.data.forEach((item: Transaction) => {
+        this.totalAmount += item.amount;
+      });
+    }
   }
 
   getTotalFromChild(total: number) {
@@ -56,7 +61,7 @@ export class MainWidgetComponent {
   }
 
   applyFilter() {
-    this.filteredList.data = this.list.data.filter((transaction: Transaction) => {
+    this.filteredList.data = this.list.data.filter((transaction: Expense | Income | Budget) => {
       const inDescription = transaction.description.toLowerCase().includes(this.searchTerm.toLowerCase());
       const inAmount = transaction.amount.toString().includes(this.searchTerm);
   

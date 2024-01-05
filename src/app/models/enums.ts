@@ -6,19 +6,20 @@ export enum CategoryEnum {
     CLOTHING = 'Clothing',
     HEALTH = 'Health',
     INSURANCE = 'Insurance',
-    HOUSEHOLD = 'Household',
+    HOUSING = 'Housing',
     EDUCATION = 'Education',
     INVESTMENTS = 'Investments',
     GIFTS = 'Gifts',
     SAVINGS = 'Savings',
     TRAVEL = 'Travel',
+    DEBT = 'Debt',
     OTHER = 'Other'
 }
 
 export enum SourceEnum {
     PAYCHECK = 'Paycheck',
     FREELANCE = 'Freelance',
-    INVESTMENTS = 'Investments',
+    INVESTMENT = 'Investment',
     GIFT = 'Gift',
     RENTAL_INCOME = 'Rental Income',
     DIVIDENDS = 'Dividends',
