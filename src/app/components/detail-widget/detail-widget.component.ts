@@ -44,6 +44,7 @@ export class DetailWidgetComponent implements OnInit {
       startDate: ['', [Validators.required]],
       endDate: ['', [Validators.required]],
       category: ['', [Validators.required]],
+      source: ['', [Validators.required]],
     });
     if (!this.isAdd) {
       this.loadTransactionForEdit();
@@ -90,7 +91,7 @@ export class DetailWidgetComponent implements OnInit {
         description: this.transactionForm.get('description')?.value,
         amount: this.transactionForm.get('amount')?.value,
         date: this.transactionForm.get('date')?.value,
-        source: this.transactionForm.get('category')?.value,
+        source: this.transactionForm.get('source')?.value,
         type: this.transaction.type,
       } as Income;
     } else if (this.transaction.type === 'budget') {
