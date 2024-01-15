@@ -12,11 +12,17 @@
         </div>
 
         <div>
-            <h6 *ngIf="trans.isExpense(transaction!) || trans.isBudget(transaction!); else isIncome">Category</h6>
-            <ng-template #isIncome><h6>Source</h6></ng-template>
-            <select id="myDropdown" formControlName="category" class="attribute-container">
-                <option *ngFor="let category of categories" value="category">{{category}}</option>
-            </select>
+            <div *ngIf="trans.isExpense(transaction!) || trans.isBudget(transaction!); else isIncome">
+                <h6>Category</h6>
+                <select id="myDropdown" formControlName="category" class="attribute-container">
+                    <option *ngFor="let category of categories" value="category">{{category}}</option>
+                </select>
+            </div>
+            <ng-template #isIncome><h6>Source</h6>
+                <select id="myDropdown" formControlName="category" class="attribute-container">
+                    <option *ngFor="let source of sources" value="category">{{source}}</option>
+                </select>
+            </ng-template>
         </div>
         
         <div>

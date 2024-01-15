@@ -8,7 +8,7 @@ export enum CategoryEnum {
     INSURANCE = 'Insurance',
     HOUSING = 'Housing',
     EDUCATION = 'Education',
-    INVESTMENTS = 'Investments',
+    INVESTMENTS = 'Investment',
     GIFTS = 'Gifts',
     SAVINGS = 'Savings',
     TRAVEL = 'Travel',
