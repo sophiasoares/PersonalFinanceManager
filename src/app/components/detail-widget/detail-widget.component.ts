@@ -9,7 +9,9 @@ import { SourceEnum } from '../../models/enums';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CapitalizePipe } from '../../shared/capitalize.pipe';
-import { notEmptyValidator } from '../../shared/custom-validators';
+import { ExpenseService } from '../../services/expense.service';
+import { IncomeService } from '../../services/income.service';
+import { BudgetService } from '../../services/budget.service';
 
 @Component({
   selector: 'app-detail-widget',
@@ -32,20 +34,52 @@ export class DetailWidgetComponent implements OnInit {
   description: string = '';
   amount: number = 0;
 
-  constructor(protected trans: TransactionService, private formBuilder: FormBuilder) {}
+  constructor(
+    protected trans: TransactionService, 
+    private expenseService: ExpenseService,
+    private incomeService: IncomeService,
+    private budgetService: BudgetService,
+    private formBuilder: FormBuilder
+    ) {}
 
   ngOnInit() {
     this.categories = Object.values(CategoryEnum);
     this.sources = Object.values(SourceEnum);
+    
     this.transactionForm = this.formBuilder.group({
       description: ['', [Validators.required]],
       amount: ['', [Validators.required]],
-      date: ['', [Validators.required]],
-      startDate: ['', [Validators.required]],
-      endDate: ['', [Validators.required]],
-      category: ['', [Validators.required]],
-      source: ['', [Validators.required]],
+      date: [''],
+      startDate: [''],
+      endDate: [''],
+      category: [''],
+      source: [''],
     });
+
+    this.transactionForm.get('type')?.valueChanges.subscribe((type) => {
+      if (type === 'expense') {
+        this.transactionForm.get('date')?.setValidators([Validators.required]);
+        this.transactionForm.get('category')?.setValidators([Validators.required]);
+        this.transactionForm.get('source')?.clearValidators();
+        this.transactionForm.get('startDate')?.clearValidators();
+        this.transactionForm.get('endDate')?.clearValidators();
+      } else if (type === 'income') {
+        this.transactionForm.get('date')?.setValidators([Validators.required]);
+        this.transactionForm.get('source')?.setValidators([Validators.required]);
+        this.transactionForm.get('startDate')?.clearValidators();
+        this.transactionForm.get('endDate')?.clearValidators();
+        this.transactionForm.get('category')?.clearValidators();
+      } else if (type === 'budget') {
+        this.transactionForm.get('startDate')?.setValidators([Validators.required]);
+        this.transactionForm.get('endDate')?.setValidators([Validators.required]);
+        this.transactionForm.get('category')?.setValidators([Validators.required]);
+        this.transactionForm.get('source')?.clearValidators();
+        this.transactionForm.get('date')?.clearValidators();
+      }
+
+      this.transactionForm.updateValueAndValidity();
+    });
+
     if (!this.isAdd) {
       this.loadTransactionForEdit();
     }
@@ -59,24 +93,41 @@ export class DetailWidgetComponent implements OnInit {
   removeTransaction() {
   }
 
-  saveTransaction() {
+  saveTransaction(event: Event): void {
+    console.log('Saving transaction');
+    event.preventDefault();
     if (this.transactionForm.invalid) {
       this.trans.markAllAsTouched(this.transactionForm);
+      console.error('Invalid form');
       return;
     }
 
     let trans = this.gatherData();
     if (this.isAdd) {
-      this.trans.addTransaction(trans.type, trans);
+      if (this.trans.isExpense(trans)) {
+        this.expenseService.addExpense(trans);
+      } else if (this.trans.isIncome(trans)) {
+        this.incomeService.addIncome(trans);
+      } else if (this.trans.isBudget(trans)) {
+        this.budgetService.addBudget(trans);
+      }
     } else {
-      this.trans.updateTransaction(trans.type, trans.id, trans)
+      console.log('Updating transaction');
+      if (this.trans.isExpense(trans)) {
+        this.expenseService.updateExpense(trans, trans.id)
+      } else if (this.trans.isIncome(trans)) {
+        this.incomeService.updateIncome(trans, trans.id);
+      } else if (this.trans.isBudget(trans)) {
+        this.budgetService.updateBudget(trans, trans.id);
+      }
     }
+    this.closeModal();
   }
 
   gatherData(): Expense | Income | Budget {
     let newTransaction!: Expense | Income | Budget;
 
-    if (this.transaction.type === 'expense') {
+    if (this.trans.isExpense(this.transaction)) {
       newTransaction = {
         id: this.transaction.id,
         description: this.transactionForm.get('description')?.value,
@@ -85,7 +136,7 @@ export class DetailWidgetComponent implements OnInit {
         category: this.transactionForm.get('category')?.value,
         type: this.transaction.type,
       } as Expense;
-    } else if (this.transaction.type === 'income') {
+    } else if (this.trans.isIncome(this.transaction)) {
       newTransaction = {
         id: this.transaction.id,
         description: this.transactionForm.get('description')?.value,
@@ -94,7 +145,7 @@ export class DetailWidgetComponent implements OnInit {
         source: this.transactionForm.get('source')?.value,
         type: this.transaction.type,
       } as Income;
-    } else if (this.transaction.type === 'budget') {
+    } else if (this.trans.isBudget(this.transaction)) {
       newTransaction = {
         id: this.transaction.id,
         description: this.transactionForm.get('description')?.value,
@@ -105,7 +156,6 @@ export class DetailWidgetComponent implements OnInit {
         type: this.transaction.type,
       } as Budget;
     }
-
     return newTransaction;
   }
 

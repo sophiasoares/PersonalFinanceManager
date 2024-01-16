@@ -35,11 +35,12 @@ export class TransactionService {
       );
   }
 
-  // Add new transaction
+  // Add transaction
   addTransaction<T extends Transaction>(type: string, transaction: T): Observable<T> {
+    console.log('Adding ' + type + ': ', transaction);
     return this.http.post<T>(`${this.transactionsUrl}/${type}/add`, transaction, this.httpOptions)
       .pipe(
-        tap((newTransaction: T) => console.log('added ' + type)),
+        tap((newTransaction: T) => console.log('added ' + type + ' with id ' + newTransaction.id)),
         catchError(this.handleError<T>('add-'+ type))
       );
   }
@@ -86,16 +87,16 @@ export class TransactionService {
     window.history.back();
   }
 
-    // Utility method to mark all form controls as touched
-    markAllAsTouched(group: FormGroup): void {
-      Object.keys(group.controls).forEach(field => {
-        const control = group.get(field);
-        if (control instanceof FormControl) {
-          control.markAsTouched({ onlySelf: true });
-        } else if (control instanceof FormGroup) {
-          this.markAllAsTouched(control);
-        }
-      });
-    }
+  // Utility method to mark all form controls as touched
+  markAllAsTouched(group: FormGroup): void {
+    Object.keys(group.controls).forEach(field => {
+      const control = group.get(field);
+      if (control instanceof FormControl) {
+        control.markAsTouched({ onlySelf: true });
+      } else if (control instanceof FormGroup) {
+        this.markAllAsTouched(control);
+      }
+    });
+  }
   
 }

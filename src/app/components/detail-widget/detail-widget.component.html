@@ -1,52 +1,74 @@
 <div *ngIf="showModal" class="background-container">
-    <form class="inner-container" [formGroup]="transactionForm" (ngSubmit)="saveTransaction()">
-        <h4 *ngIf="isAdd">New {{transaction.type | capitalize}}</h4>
-        <div>
-            <h6>Description</h6>
-            <input type="text" class="attribute-container" id="description" formControlName="description">
-        </div>
-
-        <div>
-            <h6>Amount</h6>
-            <input type="number" class="attribute-container" id="amount" formControlName="amount">
-        </div>
-
-        <div>
-            <div *ngIf="trans.isExpense(transaction!) || trans.isBudget(transaction!); else isIncome">
-                <h6>Category</h6>
-                <select id="myDropdown" formControlName="category" class="attribute-container">
-                    <option *ngFor="let category of categories" [value]="category">{{category}}</option>
-                </select>
-            </div>
-            <ng-template #isIncome><h6>Source</h6>
-                <select id="myDropdown" formControlName="source" class="attribute-container">
-                    <option *ngFor="let source of sources" [value]="source">{{source}}</option>
-                </select>
-            </ng-template>
-        </div>
+    <form class="inner-container" [formGroup]="transactionForm" (ngSubmit)="saveTransaction($event)">
+        <h4 *ngIf="isAdd">New {{ transaction.type | capitalize }}</h4>
         
+        <!-- Description -->
         <div>
-            <div *ngIf="trans.isBudget(transaction); else isExpenseOrIncome">
-                <div class="row">
-                    <h6>Start Date</h6>
-                    <h6>End Date</h6>
-                </div>
-                <div class="row">
-                    <input type="date" class="attribute-container" id="startDate" formControlName="startDate">
-                    <input type="date" class="attribute-container" id="endDate" formControlName="endDate">
-                </div>
+          <h6>Description</h6>
+          <input type="text" class="attribute-container" id="description" formControlName="description">
+          <div *ngIf="transactionForm.get('description')?.hasError('required') && transactionForm.controls['description'].touched">
+            Description is required.
+          </div>
+        </div>
+      
+        <!-- Amount -->
+        <div>
+          <h6>Amount</h6>
+          <input type="number" class="attribute-container" id="amount" formControlName="amount">
+          <div *ngIf="transactionForm.get('amount')?.hasError('required') && transactionForm.controls['amount'].touched">
+            Amount is required.
+          </div>
+        </div>
+      
+        <!-- Category or Source -->
+        <div *ngIf="trans.isExpense(transaction!) || trans.isBudget(transaction!); else isIncome">
+          <h6>Category</h6>
+          <select id="myDropdown" formControlName="category" class="attribute-container">
+            <option *ngFor="let category of categories" [value]="category">{{ category }}</option>
+          </select>
+        </div>
+        <ng-template #isIncome>
+          <h6>Source</h6>
+          <select id="myDropdown" formControlName="source" class="attribute-container">
+            <option *ngFor="let source of sources" [value]="source">{{ source }}</option>
+          </select>
+        </ng-template>
+      
+        <!-- Start Date and End Date (for Budget) -->
+        <div *ngIf="trans.isBudget(transaction); else isExpenseOrIncome">
+          <div class="row">
+            <div class="dateHolder">
+              <h6>Start Date</h6>
+              <input type="date" class="attribute-container" id="startDate" formControlName="startDate">
+              <div *ngIf="transactionForm.get('startDate')?.hasError('required')">
+                Start Date is required.
+              </div>
             </div>
-    
-            <ng-template #isExpenseOrIncome>
-                <h6>Date</h6>
-                <input type="date" class="attribute-container" id="date" formControlName="date">
-            </ng-template>
+            <div class="dateHolder">
+              <h6>End Date</h6>
+              <input type="date" class="attribute-container" id="endDate" formControlName="endDate">
+              <div *ngIf="transactionForm.get('endDate')?.hasError('required')">
+                End Date is required.
+              </div>
+            </div>
+          </div>
         </div>
-
+      
+        <ng-template #isExpenseOrIncome>
+          <!-- Date (for Expense or Income) -->
+          <h6>Date</h6>
+          <input type="date" class="attribute-container" id="date" formControlName="date">
+          <div *ngIf="transactionForm.get('date')?.hasError('required')">
+            Date is required.
+          </div>
+        </ng-template>
+      
+        <!-- Buttons -->
         <div class="row buttons">
-            <button type="button" (click)="closeModal()">Close</button>
-            <button *ngIf="!isAdd" type="button" (click)="removeTransaction()">Remove</button>
-            <button (click)="saveTransaction()">Save</button>
+          <button type="button" (click)="closeModal()">Close</button>
+          <button *ngIf="!isAdd" type="button" (click)="removeTransaction()">Remove</button>
+          <button type="submit" [disabled]="transactionForm.invalid">Save</button>
         </div>
-    </form>
+      </form>
+      
 </div>
