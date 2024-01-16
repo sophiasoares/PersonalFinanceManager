@@ -91,10 +91,17 @@ export class DetailWidgetComponent implements OnInit {
   }
 
   removeTransaction() {
+    if (this.trans.isExpense(this.transaction)) {
+      this.expenseService.deleteExpense(this.transaction.id);
+    } else if (this.trans.isIncome(this.transaction)) {
+      this.incomeService.deleteIncome(this.transaction.id);
+    } else if (this.trans.isBudget(this.transaction)) {
+      this.budgetService.deleteBudget(this.transaction.id);
+    }
+    this.closeModal();
   }
 
   saveTransaction(event: Event): void {
-    console.log('Saving transaction');
     event.preventDefault();
     if (this.transactionForm.invalid) {
       this.trans.markAllAsTouched(this.transactionForm);
