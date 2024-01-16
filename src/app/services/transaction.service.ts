@@ -30,7 +30,7 @@ export class TransactionService {
   getTransaction<T extends Transaction>(type: string, id: number): Observable<T> {
     return this.http.get<T>(`${this.transactionsUrl}/${type}/find/${id}`)
       .pipe(
-        tap(_ => console.log('fetched ' + type)),
+        tap((transaction: T) => console.log('fetched ' + type + ' (' + transaction.description + ' id ' + transaction.id + ')')),
         catchError(this.handleError<T>('get-'+ type))
       );
   }
@@ -40,16 +40,16 @@ export class TransactionService {
     console.log('Adding ' + type + ': ', transaction);
     return this.http.post<T>(`${this.transactionsUrl}/${type}/add`, transaction, this.httpOptions)
       .pipe(
-        tap((newTransaction: T) => console.log('added ' + type + ' with id ' + newTransaction.id)),
+        tap((newTransaction: T) => console.log('added ' + type  + ' (' + newTransaction.description + ' id ' + newTransaction.id + ')')),
         catchError(this.handleError<T>('add-'+ type))
       );
   }
 
   // Update transaction
-  updateTransaction<T extends Transaction>(type: string, id: number, transaction: T): Observable<any> {
-    return this.http.put(`${this.transactionsUrl}/${type}/${id}`, transaction, this.httpOptions)
+  updateTransaction<T extends Transaction>(type: string, transaction: T): Observable<any> {
+    return this.http.put(`${this.transactionsUrl}/${type}/update`, transaction, this.httpOptions)
       .pipe(
-        tap(_ => console.log('updated ' + type)),
+        tap(_ => console.log('updated ' + type + ' (' + transaction.description + ' id ' + transaction.id + ')')),
         catchError(this.handleError<any>('update-'+ type))
       );
   }
@@ -58,7 +58,7 @@ export class TransactionService {
   deleteTransaction<T extends Transaction>(type: string, id: number): Observable<T> {
     return this.http.delete<T>(`${this.transactionsUrl}/${type}/delete/${id}`, this.httpOptions)
       .pipe(
-        tap(_ => console.log('deleted ' + type)),
+        tap(_ => console.log('deleted ' + type + ' with id ' + id)),
         catchError(this.handleError<T>('delete-'+ type))
       );
   }

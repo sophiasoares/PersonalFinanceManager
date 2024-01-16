@@ -33,8 +33,8 @@ export class BudgetService {
   }
   
   // Update budget
-  updateBudget(updatedBudget: Budget, id: number) {
-    this.trans.updateTransaction<Budget>('budget', id, updatedBudget).subscribe(() => this.trans.goBack());
+  updateBudget(updatedBudget: Budget) {
+    this.trans.updateTransaction<Budget>('budget', updatedBudget).subscribe(() => this.trans.goBack());
   }
 
   // Delete budget

@@ -33,8 +33,8 @@ export class IncomeService {
   }
   
   // Update income
-  updateIncome(updatedIncome: Income, id: number) {
-    this.trans.updateTransaction<Income>('income', id, updatedIncome).subscribe(() => this.trans.goBack());
+  updateIncome(updatedIncome: Income) {
+    this.trans.updateTransaction<Income>('income', updatedIncome).subscribe(() => this.trans.goBack());
   }
 
   // Delete income

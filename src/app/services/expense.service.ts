@@ -33,8 +33,8 @@ export class ExpenseService {
   }
   
   // Update expense
-  updateExpense(updatedExpense: Expense, id: number) {
-    this.trans.updateTransaction<Expense>('expense', id, updatedExpense).subscribe(() => this.trans.goBack());
+  updateExpense(updatedExpense: Expense) {
+    this.trans.updateTransaction<Expense>('expense', updatedExpense).subscribe(() => this.trans.goBack());
   }
 
   // Delete expense

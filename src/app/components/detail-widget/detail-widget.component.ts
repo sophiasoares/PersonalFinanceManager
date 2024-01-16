@@ -112,13 +112,12 @@ export class DetailWidgetComponent implements OnInit {
         this.budgetService.addBudget(trans);
       }
     } else {
-      console.log('Updating transaction');
       if (this.trans.isExpense(trans)) {
-        this.expenseService.updateExpense(trans, trans.id)
+        this.expenseService.updateExpense(trans)
       } else if (this.trans.isIncome(trans)) {
-        this.incomeService.updateIncome(trans, trans.id);
+        this.incomeService.updateIncome(trans);
       } else if (this.trans.isBudget(trans)) {
-        this.budgetService.updateBudget(trans, trans.id);
+        this.budgetService.updateBudget(trans);
       }
     }
     this.closeModal();
